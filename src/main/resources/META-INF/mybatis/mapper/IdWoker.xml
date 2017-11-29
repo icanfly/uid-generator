@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.baidu.fsg.uid.worker.dao.IdWorkerDAO">
+    <resultMap id="IdWorkerResultMap"
+               type="com.baidu.fsg.uid.worker.entity.IdWorkerEntity">
+        <id column="worker_id" jdbcType="BIGINT" property="workerId"/>
+        <result column="host" jdbcType="VARCHAR" property="host"/>
+        <result column="host_mac" jdbcType="VARCHAR" property="hostMac"/>
+        <result column="launch_time" jdbcType="TIMESTAMP" property="launchTime"/>
+        <result column="heartbeat_time" jdbcType="TIMESTAMP" property="heartbeatTime"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
+    </resultMap>
+
+    <update id="saveOrUpdate">
+		INSERT INTO kxl_id_worker (worker_id,host,host_mac,launch_time,heartbeat_time,create_time,update_time)
+		VALUES (NULL,#{host},#{hostMac},NOW(),NOW(),NOW(),NOW())
+		ON DUPLICATE KEY UPDATE launch_time = NOW(),update_time = NOW()
+	</update>
+
+    <select id="findWorker" resultMap="IdWorkerResultMap">
+        SELECT worker_id,host,host_mac,launch_time,heartbeat_time,create_time,update_time
+        FROM kxl_id_worker
+        WHERE host = #{host} AND host_mac = #{hostMac}
+    </select>
+
+    <update id="heartbeat">
+        UPDATE kxl_id_worker
+        SET heartbeat_time = NOW()
+        WHERE host = #{host} AND host_mac = #{hostMac}
+    </update>
+
+</mapper>

@@ -15,14 +15,16 @@
  */
 package com.baidu.fsg.uid.utils;
 
+import java.net.Inet4Address;
 import java.net.InetAddress;
 import java.net.NetworkInterface;
 import java.net.SocketException;
+import java.net.UnknownHostException;
 import java.util.Enumeration;
 
 /**
  * NetUtils
- * 
+ *
  * @author yutianbao
  */
 public abstract class NetUtils {
@@ -61,7 +63,8 @@ public abstract class NetUtils {
                 InetAddress address = addressEnumeration.nextElement();
 
                 // ignores all invalidated addresses
-                if (address.isLinkLocalAddress() || address.isLoopbackAddress() || address.isAnyLocalAddress()) {
+                if (address.isLinkLocalAddress() || address.isLoopbackAddress() || address.isAnyLocalAddress()
+                    || !(address instanceof Inet4Address)) {
                     continue;
                 }
 
@@ -74,11 +77,36 @@ public abstract class NetUtils {
 
     /**
      * Retrieve local address
-     * 
+     *
      * @return the string local address
      */
     public static String getLocalAddress() {
         return localAddress.getHostAddress();
+    }
+
+    public static String getLocalMacAddress(){
+        byte[] mac = null;
+        try {
+            mac = NetworkInterface.getByInetAddress(localAddress).getHardwareAddress();
+        } catch (SocketException e) {
+            throw new RuntimeException(e);
+        }
+
+        StringBuffer sb = new StringBuffer("");
+        for (int i = 0; i < mac.length; i++) {
+            if (i != 0) {
+                sb.append("-");
+            }
+            //字节转换为整数
+            int temp = mac[i] & 0xff;
+            String str = Integer.toHexString(temp);
+            if (str.length() == 1) {
+                sb.append("0" + str);
+            } else {
+                sb.append(str);
+            }
+        }
+        return sb.toString();
     }
 
 }
