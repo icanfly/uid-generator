@@ -87,8 +87,10 @@ public abstract class NetUtils {
     public static String getLocalMacAddress(){
         byte[] mac = null;
         try {
-            mac = NetworkInterface.getByInetAddress(localAddress).getHardwareAddress();
+            mac = NetworkInterface.getByInetAddress(InetAddress.getLocalHost()).getHardwareAddress();
         } catch (SocketException e) {
+            throw new RuntimeException(e);
+        } catch (UnknownHostException e) {
             throw new RuntimeException(e);
         }
 
