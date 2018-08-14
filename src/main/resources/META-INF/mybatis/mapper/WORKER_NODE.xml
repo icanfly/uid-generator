@@ -12,7 +12,7 @@
 		<result column="CREATED" jdbcType="TIMESTAMP" property="created" />
 	</resultMap>
 
-	<insert id="addWorkerNode" useGeneratedKeys="true" keyProperty="id"
+	<insert id="addWorkerNode" useGeneratedKeys="false" keyProperty="id"
 		parameterType="com.baidu.fsg.uid.worker.entity.WorkerNodeEntity">
 		INSERT INTO WORKER_NODE
 		(HOST_NAME,
@@ -26,8 +26,8 @@
 		#{port},
 		#{type},
 		#{launchDate},
-		NOW(),
-		NOW())
+	    CURRENT_TIMESTAMP,
+		CURRENT_TIMESTAMP)
 	</insert>
 
 	<select id="getWorkerNodeByHostPort" resultMap="workerNodeRes">

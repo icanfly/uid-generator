@@ -8,7 +8,7 @@
 
     <groupId>com.baidu.fsg</groupId>
     <artifactId>uid-generator</artifactId>
-    <version>1.0.0-SNAPSHOT</version>
+    <version>1.0.0.op-SNAPSHOT</version>
     <packaging>jar</packaging>
 
     <!-- Properties -->
@@ -112,6 +112,12 @@
             <scope>test</scope>
         </dependency>
 
+        <dependency>
+            <groupId>com.oracle</groupId>
+            <artifactId>ojdbc6</artifactId>
+            <version>11.2.0.3</version>
+        </dependency>
+
     </dependencies>
 
     <build>
@@ -141,6 +147,17 @@
             </plugin>
         </plugins>
     </build>
+
+    <distributionManagement>
+        <repository>
+            <id>releases</id>
+            <url>http://nexus.kingxunlian.com/nexus/content/repositories/releases</url>
+        </repository>
+        <snapshotRepository>
+            <id>snapshots</id>
+            <url>http://nexus.kingxunlian.com/nexus/content/repositories/snapshots</url>
+        </snapshotRepository>
+    </distributionManagement>
 
 
 </project>
